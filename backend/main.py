@@ -60,7 +60,7 @@ async def create_post(posts_blog: UserBase, db: db_dependency):
     return db_post
 
 
-@app.get("/posts_blog/", response_model=list[UserModel])
+@app.get("/posts_blog/", response_model=List[UserModel])
 async def read_posts_blog(db: db_dependency, skip: int = 0, limit: int = 100):
     posts = db.query(models.User).offset(skip).limit(limit).all()
     return posts
