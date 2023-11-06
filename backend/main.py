@@ -1,15 +1,16 @@
 from fastapi import FastAPI, Depends, HTTPException
-from typing import Annotated
+from typing import Annotated, List
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from database import engine, SessionLocal
-import models
 from fastapi.middleware.cors import CORSMiddleware
+import models
 
 app = FastAPI()
 
 origins = [
     'http://localhost:3000',
+    
 ]
 
 app.add_middleware(
@@ -18,14 +19,14 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+
 )
 
 
 class UserBase(BaseModel):
     title: str
     content: str
-    decription: str
-    is_active: bool
+    description: str | None = None
     date: str
 
 
@@ -46,12 +47,51 @@ def get_db():
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
+
 models.Base.metadata.create_all(bind=engine) 
 
+
 @app.post("/posts_blog/", response_model=UserModel)
-async def create_post(db: db_dependency, post: UserBase):
-    db_post = models.User(**post.dict()) 
+async def create_post(posts_blog: UserBase, db: db_dependency):
+    db_post = models.User(**posts_blog.dict()) 
     db.add(db_post)
     db.commit()
     db.refresh(db_post)
     return db_post
+
+
+@app.get("/posts_blog/", response_model=list[UserModel])
+async def read_posts_blog(db: db_dependency, skip: int = 0, limit: int = 100):
+    posts = db.query(models.User).offset(skip).limit(limit).all()
+    return posts
+
+@app.get("/posts_blog/{post_id}", response_model=UserModel)
+async def read_post_blog_by_id(post_id: int, db: db_dependency):
+    post = db.query(models.User).filter(models.User.id == post_id).first()
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    return post
+
+
+@app.put("/posts_blog/{post_id}")
+async def update_post_blog_by_id(post_id: int, post: UserBase, db: db_dependency):
+    db_post = db.query(models.User).filter(models.User.id == post_id).first()
+    if not db_post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    db_post.title = post.title
+    db_post.content = post.content
+    db_post.description = post.description
+    db_post.is_active = post.is_active
+    db_post.date = post.date
+    db.commit()
+    db.refresh(db_post)
+    return db_post
+
+@app.delete("/posts_blog/{post_id}")
+async def delete_post_blog_by_id(post_id: int, db: db_dependency):
+    post = db.query(models.User).filter(models.User.id == post_id).first()
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    db.delete(post)
+    db.commit()
+    return {"message": "Post deleted"}

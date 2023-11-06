@@ -8,5 +8,4 @@ class User(Base):
     title = Column(String)
     content = Column(String)
     description = Column(String)
-    is_active = Column(Boolean)
-    date = Column(String)
+    date = Column(String) 
