@@ -24,7 +24,7 @@ Flask-Migrate==4.0.5
 Flask-SQLAlchemy==3.0.5
 greenlet==3.0.1
 h11==0.14.0
-httptools==0.6.1
+httptools==0.6.0
 idna==3.4
 itsdangerous==2.1.2
 Jinja2==3.1.2
