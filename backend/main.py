@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
-from typing_extensions import Annotated, List
+from typing import Annotated, List
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from database import engine, SessionLocal
@@ -51,8 +51,8 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 models.Base.metadata.create_all(bind=engine) 
 
-@app.get("/", response_model=List[UserModel])
-async def root():
+@app.get("/")
+async def read_root():
     return {"message": "Hello World"}
 
 @app.post("/posts_blog/", response_model=UserModel)
@@ -100,4 +100,4 @@ async def delete_post_blog_by_id(post_id: int, db: db_dependency):
     return {"message": "Post deleted"}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, debug=True)
