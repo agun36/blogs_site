@@ -81,7 +81,6 @@ async def update_post_blog_by_id(post_id: int, post: UserBase, db: db_dependency
     db_post.title = post.title
     db_post.content = post.content
     db_post.description = post.description
-    db_post.is_active = post.is_active
     db_post.date = post.date
     db.commit()
     db.refresh(db_post)
