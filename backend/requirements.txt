@@ -48,7 +48,7 @@ python-dotenv==0.21.1
 python-jose==3.3.0
 python-multipart==0.0.6
 PyYAML==6.0.1
-render-cli==0.2.1
+render-cli
 requests==2.31.0
 rich==12.6.0
 rsa==4.9
