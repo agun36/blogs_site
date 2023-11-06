@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from database import engine, SessionLocal
 from fastapi.middleware.cors import CORSMiddleware
 import models
+import uvicorn
 
 app = FastAPI()
 
@@ -94,3 +95,6 @@ async def delete_post_blog_by_id(post_id: int, db: db_dependency):
     db.delete(post)
     db.commit()
     return {"message": "Post deleted"}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
