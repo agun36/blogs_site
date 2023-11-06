@@ -26,7 +26,7 @@ app.add_middleware(
 class UserBase(BaseModel):
     title: str
     content: str
-    description: str | None = None
+    description: str
     date: str
 
 
