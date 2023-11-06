@@ -17,7 +17,7 @@ dnspython==2.3.0
 ecdsa==0.18.0
 email-validator==2.1.0
 fastapi==0.103.2
-filelock==3.13.1
+filelock==3.12.2
 Flask==3.0.0
 Flask-Cors==4.0.0
 Flask-Migrate==4.0.5
