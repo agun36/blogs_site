@@ -51,9 +51,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 models.Base.metadata.create_all(bind=engine) 
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
+
 
 @app.post("/posts_blog/", response_model=UserModel)
 async def create_post(posts_blog: UserBase, db: db_dependency):
