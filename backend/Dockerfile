@@ -1,26 +1,17 @@
-FROM python:3-alpine AS builder
- 
+# base image
+FROM python:3.11.6-alpine
+
+# working directory inside container
 WORKDIR /app
- 
-RUN python3 -m venv venv
-ENV VIRTUAL_ENV=/app/venv
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
- 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
- 
-# Stage 2
-FROM python:3-alpine AS runner
- 
-WORKDIR /app
- 
-COPY --from=builder /app/venv venv
-COPY main.py main.py
- 
-ENV VIRTUAL_ENV=/app/venv
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-ENV FLASK_APP=app/main.py
- 
-EXPOSE 8000
- 
-CMD [ "uvicorn", "--host", "0.0.0.0", "main:app" ]
+
+# copy requirement.txt file to working directory
+COPY ./requirements.txt /app/requirements.txt
+
+# The --no-cache-dir option tells pip to not save the downloaded packages locally, as that is only if pip was going to be run again to install the same packages, but that's not the case when working with containers
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+
+# Copy the ./app directory inside the working directory.
+COPY ./app /app
+
+# run the uvicorn server in working directory
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
