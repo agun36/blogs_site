@@ -21,7 +21,7 @@ def post_article(request: PostBase, db: Session = Depends(get_db)):
 	return db_article.create_article(db, request)
 
 
-@router.get('', status_code=200) )
+@router.get('', status_code=200)
 def get_all(db: Session = Depends(get_db)):
 	return db_article.get_article_list(db)
 
