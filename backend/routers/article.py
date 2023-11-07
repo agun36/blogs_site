@@ -16,17 +16,17 @@ router = APIRouter(
 )
 
 
-@router.post('')
+@router.post('', status_code=201)
 def post_article(request: PostBase, db: Session = Depends(get_db)):
 	return db_article.create_article(db, request)
 
 
-@router.get('')
+@router.get('' )
 def get_all(db: Session = Depends(get_db)):
 	return db_article.get_article_list(db)
 
 
-@router.delete('/{id}')
+@router.delete('/{id}', status_code=200)
 def delete_article(id: int, db:Session = Depends(get_db)):
 	return db_article.delete_article(id, db)
 
