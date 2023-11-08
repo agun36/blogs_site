@@ -1,7 +1,0 @@
-fastapi
-gunicorn==19.7.1
-sqlalchemy
-pydantic
-python-multipart
-aiofiles
-uvicorn
