@@ -1,5 +1,10 @@
 {
   "dependencies": {
     "heroku": "^8.7.1"
+
+  },
+  "scripts": {
+    "install-python-deps": "pip install -r requirements.txt"
   }
+  
 }
