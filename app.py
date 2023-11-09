@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired 
@@ -21,7 +21,7 @@ db = SQLAlchemy(app)
 # create a model
 class Users (db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200), nullable=False)
+    name = db.Column(db.String(200), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -36,6 +36,30 @@ class UserForm(FlaskForm):
     submit = SubmitField("Submit") 
  
 
+# create a route for update
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def update(id):
+    form = UserForm()
+    name_to_update = Users.query.get_or_404(id)
+    if request.method == 'POST':
+        name_to_update.name = request.form['name']
+        name_to_update.email = request.form['email']
+        try:
+            db.session.commit()
+            flash("User Updated Successfully")
+            return render_template('update.html', form=form, name_to_update=name_to_update)
+        except:
+            flash("Error! Looks like there was a problem...try again!")
+            return render_template('update.html',
+                                   form=form,
+                                   name_to_update = name_to_update)
+    else:
+        return render_template('update.html',
+                               form=form,
+                               name_to_update = name_to_update)
+    
+        
+
 
 # create a route decorator
 @app.route('/user/add', methods=['GET', 'POST'])
@@ -43,15 +67,20 @@ def add_user():
     name = None 
     form = UserForm()
     if form.validate_on_submit():
-        user = Users.query.filter_by(email=form.email.data).first()
-        if user is None:
-            user = Users(name=form.name.data, email=form.email.data)
-            db.session.add(user)
-            db.session.commit()
+        existing_user = Users.query.filter_by(name=form.name.data).first()
+        if existing_user:
+            flash("Username already exists")
+        else:
+            user = Users.query.filter_by(email=form.email.data).first()
+            if user is None:
+                user = Users(name=form.name.data, email=form.email.data)
+                db.session.add(user)
+                db.session.commit()
         name = form.name.data
         form.name.data = ''
         form.email.data = ''
         flash("Form Submitted Successfully!")
+        return redirect(url_for('add_user'))
     our_users = Users.query.order_by(Users.date_created).all()
     return render_template('add_user.html', form=form, name=name, our_users=our_users) 
 
