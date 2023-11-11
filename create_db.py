@@ -11,6 +11,7 @@ mydb = mysql.connector.connect(
 # it makes all execute queries
 mycursor = mydb.cursor()
 
+mycursor.execute("DROP DATABASE IF EXISTS our_users")
 mycursor.execute("CREATE DATABASE our_users")
 mycursor.execute("SHOW DATABASES")
 

@@ -12,7 +12,7 @@ app = Flask(__name__)
 # old sqlite db
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
 # my new mysql db
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://user:password123@localhost/our_users'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password123@localhost/our_users'
 app.config['SECRET_KEY'] = 'mykey' 
 # initializing database
 db = SQLAlchemy(app)
@@ -23,6 +23,7 @@ class Users (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
+    favorite_color = db.Column(db.String(120))
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
     # create a string
@@ -33,6 +34,7 @@ class Users (db.Model):
 class UserForm(FlaskForm): 
     name = StringField("Name", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired()])
+    favorite_color = StringField("Favorite Color")
     submit = SubmitField("Submit") 
  
 
@@ -44,6 +46,7 @@ def update(id):
     if request.method == 'POST':
         name_to_update.name = request.form['name']
         name_to_update.email = request.form['email']
+        name_to_update.favorite_color = request.form['favorite_color']
         try:
             db.session.commit()
             flash("User Updated Successfully")
@@ -73,12 +76,13 @@ def add_user():
         else:
             user = Users.query.filter_by(email=form.email.data).first()
             if user is None:
-                user = Users(name=form.name.data, email=form.email.data)
+                user = Users(name=form.name.data, email=form.email.data, favorite_color=form.favorite_color.data)
                 db.session.add(user)
                 db.session.commit()
         name = form.name.data
         form.name.data = ''
         form.email.data = ''
+        form.favorite_color.data = ''
         flash("Form Submitted Successfully!")
         return redirect(url_for('add_user'))
     our_users = Users.query.order_by(Users.date_created).all()
@@ -121,4 +125,4 @@ def name():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5001)

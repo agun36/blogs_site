@@ -5,7 +5,7 @@
 
 <div class="alert alert-success alert-dismissible fade show" role="alert">
     
-    Hey - {{name}} {{message}}
+   {{message}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endfor %}
@@ -24,6 +24,8 @@
     {{ form.name(class='form-control') }}
     {{ form.email.label(class="form-label") }}
     {{ form.email(class='form-control') }}
+    {{ form.favorite_color.label(class="form-label") }}
+    {{ form.favorite_color(class='form-control') }}
     <br>
     {{ form.submit(class='btn btn-secondary') }}
 </form>
@@ -36,6 +38,7 @@
     </td>
     <td>
     <p>{{our_user.email}}</p>
+    <p>{{our_user.favorite_color}}</p> 
     </td>
 </tr>
 {% endfor %}
