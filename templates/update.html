@@ -3,33 +3,42 @@
 
 {% for message in get_flashed_messages() %}
 
-<div class="alert alert-success alert-dismissible fade show" role="alert"> 
-    {{message}}
+<div class="alert alert-success alert-dismissible fade show" role="alert">   
+   {{message}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endfor %}
 
 {% if name %}
-<h1>Hello {{ name | title }}</h1>
-<img src="{{url_for('static', filename='images/laptop.jpg')}}" class="mb-4" alt="laptop side">
-<p id="demo" class="text-info" aria-setsize="12">This is...</p>
-
+<h1>Update User!</h1>
+<!-- <img src="{{url_for('static', filename='images/laptop.jpg')}}" class="mb-4" alt="laptop side">
+<p id="demo" class="text-info" aria-setsize="12">This is...</p> -->
+<table class="table table-hover table-bordered table-striped">
+{% for our_user in our_users %}
+	<tr>
+	<td>{{ our_user.id }}. <a href="{{ url_for('update', id=our_user.id)}}">{{ our_user.name }}</a> - {{ our_user.email }} - {{ our_user.favorite_color }} - 
+		<a href="{{ url_for('delete', id=our_user.id)}}">Delete</a>
+    </td>
+	</tr>
+{% endfor %}
+</table>
 {% else %}
-<h1>Update User Details....</h1>
+<h1>Update User</h1>
 <br>
-<form action="/update/{{name_to_update.id}} " method="POST" class="shadow mb-5 p-3">
+<div class="shadow mb-5 p-3 bg-body">
+<form action="/update/{{name_to_update.id}}" method="POST" class="shadow mb-5 p-3">
     {{ form.hidden_tag() }}
     {{ form.name.label(class="form-label") }}
     {{ form.name(class='form-control', value=name_to_update.name) }}
     {{ form.email.label(class="form-label") }}
-    {{ form.email(class='form-control', value=name_to_update.email ) }}
+    {{ form.email(class='form-control', value=name_to_update.email) }}
     {{ form.favorite_color.label(class="form-label") }}
-    {{ form.favorite_color(class='form-control', value=name_to_update.favorite_color ) }}
+    {{ form.favorite_color(class='form-control', value=name_to_update.favorite_color) }}
     <br>
-    {{ form.submit(class='btn btn-secondary') }}
+    {{ form.submit(class='btn btn-secondary') }} 
+    <a href="{{ url_for('delete', id=id) }}" class="btn btn-danger">Delete</a>
 </form>
-
-
+</div>
 {% endif %}
 <!-- <h1>Hello {{name | title}}</h1> -->
 {% endblock %}

@@ -1,0 +1,5 @@
+{
+    "dataworkspace.excludedProjects": [
+        "instance/password123/password123.sqlproj"
+    ]
+}
