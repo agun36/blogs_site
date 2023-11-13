@@ -10,9 +10,11 @@ mydb = mysql.connector.connect(
 
 # it makes all execute queries
 mycursor = mydb.cursor()
-
-mycursor.execute("CREATE DATABASE our_users")
-mycursor.execute("SHOW DATABASES")
+if mydb.is_connected():
+    print("connected")
+    mycursor.execute("DROP DATABASE IF EXISTS our_users")
+    mycursor.execute("CREATE DATABASE our_users")
+    mycursor.execute("SHOW DATABASES")
 
 for db in mycursor:
     print(db)
