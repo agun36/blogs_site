@@ -21,6 +21,6 @@ ENV VIRTUAL_ENV=/app/.venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 ENV FLASK_APP=app/app.py
  
-EXPOSE 8080
+EXPOSE 5000
  
-CMD ["gunicorn", "--bind" , ":8080", "--workers", "2", "app:app"]
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 app:app

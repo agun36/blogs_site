@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError
@@ -164,4 +165,4 @@ def name():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True,host="0.0.0.0",port=int(os.envion.get("PORT",8080)))
