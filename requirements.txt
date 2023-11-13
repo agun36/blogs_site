@@ -19,7 +19,7 @@ mysql-connector-python==8.0.25
 mysql-connector-python-rf==2.2.2
 packaging==23.2
 protobuf==4.21.12
-psycopg2==2.9.9
+psycopg2-binary
 pycparser==2.21
 PyMySQL==1.1.0
 pyproject_hooks==1.0.0
