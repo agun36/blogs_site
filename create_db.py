@@ -1,24 +1,15 @@
 import mysql.connector
 
-
 mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="password123"
-    # auth_plugin="mysql_native_password"
-)
+	host="localhost",
+	user="root",
+	passwd = "password123",
+	)
 
-# it makes all execute queries
-mycursor = mydb.cursor()
-if mydb.is_connected():
-    print("connected")
-    mycursor.execute("DROP DATABASE IF EXISTS our_users")
-    mycursor.execute("CREATE DATABASE our_users")
-    mycursor.execute("SHOW DATABASES")
+my_cursor = mydb.cursor()
 
-for db in mycursor:
-    print(db)
+#my_cursor.execute("CREATE DATABASE our_users")
 
-
-mycursor.close()
-mydb.close()
+my_cursor.execute("SHOW DATABASES")
+for db in my_cursor:
+	print(db)
