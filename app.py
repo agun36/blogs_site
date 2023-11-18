@@ -384,7 +384,7 @@ def add_user():
 # Create a route decorator
 @app.route('/')
 def index():
-	first_name = "John"
+	first_name = "Akin"
 	stuff = "This is bold text"
 
 	favorite_pizza = ["Pepperoni", "Cheese", "Mushrooms", 41]
