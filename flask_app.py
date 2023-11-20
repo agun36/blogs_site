@@ -19,12 +19,15 @@ app = Flask(__name__)
 ckeditor = CKEditor(app)
 # Add Database
 # Old SQLite DB
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+# Flask app configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///our_users.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://fvmdxyjigwbmiu:d31d36c7613e08f7ad37a6e40007189d7f2f44fbc99234b339994780a122d870@ec2-3-214-190-189.compute-1.amazonaws.com:5432/d17b5scj97ckqe'
 # New MySQL DB
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://username:password@localhost/db_name'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password123@localhost/our_users'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password123@localhost/our_users'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 # Secret Key!
 app.config['SECRET_KEY'] = "mykey"
 # Initialize The Database
