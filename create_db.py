@@ -1,21 +1,15 @@
-import sqlite3
+import mysql.connector
 
-# Connect to SQLite3 (or create a new database file if it doesn't exist)
-conn = sqlite3.connect('our_users.db')
+mydb = mysql.connector.connect(
+	host="localhost",
+	user="root",
+	passwd = "password123",
+	)
 
-# Create a cursor object to execute SQL commands
-cursor = conn.cursor()
+my_cursor = mydb.cursor()
 
-# Create a table named 'users'
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT NOT NULL,
-        email TEXT NOT NULL,
-        password_hash TEXT NOT NULL
-    )
-''')
+#my_cursor.execute("CREATE DATABASE our_users")
 
-# Commit the changes and close the connection
-conn.commit()
-conn.close()
+my_cursor.execute("SHOW DATABASES")
+for db in my_cursor:
+	print(db)
